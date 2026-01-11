@@ -7,32 +7,95 @@
 <link rel="stylesheet" href="styles.css">
 <style>
   body {
-    background-color: rgb(230, 173, 204);
+    background: linear-gradient( rgb(230, 173, 204), rgb(245, 3, 148), rgb(98, 2, 59));
     overflow-x: hidden;
     height: 1000vh;      /* sichtbare Höhe auf 10vh begrenzen */
     max-height: 1000vh;  /* zusätzliche Absicherung */
     overflow-y: auto;  /* vertikales Scrollen innerhalb dieser Höhe erlauben */
   }
-  #barbaraProfile{
-    position: fixed;  top:150px; right:-50px; height:400px; }
-  #paimonProfile{
-    position: absolute; top:130px; left:120px; height:300px; }
-  #spirit{
-    position:relative; top:40px; left:-10px;}
-  div.profilbild-wrapper{ position:relative; left:120px; }
-option.titelprofile { background-color:pink; font-weight:bold; }
-#profilename{
-  position:relative; top:60px; left: -120px;}
-.profil-container { text-align:center; color:rgb(137,1,44); font-family:sans-serif; }
-.profilbild-wrapper { position:relative; display:inline-block; margin:20px; }
-#currentProfilePic { width:160px; height:160px; border-radius:50%; border:3px solid rgb(137,1,44); background:white; object-fit:cover; }
-#addProfilePic { display:block; margin:10px auto; background:rgb(137,1,44); color:white; border:none; border-radius:10px; padding:8px 15px; cursor:pointer; }
-.profilbilder { display:none; margin-top:10px; }
-.profilbilder img { width:100px; height:100px; margin:10px; border-radius:20px; cursor:pointer; border:3px solid transparent; object-fit:cover; }
-.profilbilder img:hover { border:3px solid rgb(137,1,44); }
-select, input { margin:10px; padding:8px; font-size:18px; border:2px solid rgb(137,1,44); border-radius:10px; text-align:center; }
-button#saveProfil { position: relative; top: 46px; left: -20px; padding:10px 20px; border:none; border-radius:10px; background:rgb(137,1,44); color:white; cursor:pointer; }
+  .profileSetup {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profil-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  text-align: center;
+  color: rgb(137,1,44);
+  font-family: sans-serif;
+}
+.profilbild-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+#currentProfilePic {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 3px solid rgb(137,1,44);
+  object-fit: cover;
+}
+
+
+#addProfilePic,
+#saveProfil {
+  background: rgb(137,1,44);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 15px;
+  cursor: pointer;
+}
+
+
+input {
+  width: 250px;
+  padding: 8px;
+  font-size: 18px;
+  border: 2px solid rgb(137,1,44);
+  border-radius: 10px;
+  text-align: center;
+}
+select {
+  width: 250px;
+  padding: 8px;
+  margin-top:-20px;
+  margin-bottom: -20px;
+  font-size: 18px;
+  border: 2px solid rgb(137,1,44);
+  border-radius: 10px;
+  text-align: center;
+}
+
+
+.profilbilder {
+  display: none;
+}
+
+
+.profilbilder img {
+  width: 100px;
+  height: 100px;
+  margin: 5px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+#barbaraProfile{ position: fixed;  top: 202px; right: 0px; height: 350px; } 
+#paimonProfile{ position: absolute; top:130px; left:120px; height:300px; }
+
 </style>
+
+
+
+
 <body>
     <h1>My Profile</h1>
   <ul class="navBar">
@@ -45,11 +108,13 @@ button#saveProfil { position: relative; top: 46px; left: -20px; padding:10px 20p
   </ul>
 <img class="nyancatProfile" src="images/nyancat.png" alt="LA" style="width:40%">
   
-<div class="profil-container">
+
+        <div class="profileSetup">
+  <div class="profil-container">
     <div class="profilbild-wrapper">
         <img id="currentProfilePic" src="images/L-Profile.jpg" alt="Profilbild">
         <button id="addProfilePic">Add Profile Picture</button>
-        
+
         <div class="profilbilder">
             <img src="images/furinaProfilepicture.webp" data-pic-src="images/furinaProfilepicture.webp">
             <img src="images/miniProfilepicture.jpg" data-pic-src="images/miniProfilepicture.jpg">
@@ -57,7 +122,9 @@ button#saveProfil { position: relative; top: 46px; left: -20px; padding:10px 20p
         </div>
     </div>
     
+    
     <input type="text" id="profilename" placeholder="zb Krotan Westarsch" autocomplete="off">
+    <input type="text" id="changePassword" placeholder="change password" autocomplete="off">
     <br>
     <select id="spirit">
         <option class="titelprofile" value="">Titel</option>
@@ -67,7 +134,8 @@ button#saveProfil { position: relative; top: 46px; left: -20px; padding:10px 20p
     </select>
     <br>
     <button id="saveProfil" type="button">Speichern</button></div>
-    
+    </div>
+    </div>
 <img id="barbaraProfile" src="images/profileBarbara.png" alt="barbara">
 <img id="paimonProfile" src="images/profilePaimon.png" alt="paimon">
 <button class="delete" onclick="window.location.href='whyDidUDelete.html'">
@@ -82,9 +150,10 @@ button#saveProfil { position: relative; top: 46px; left: -20px; padding:10px 20p
 <table id="resultTable" class="min-w-full border text-sm">
   <thead>
     <tr class="bg-gray-200">
-      <th class="border px-2 py-1">ID</th>
-      <th class="border px-2 py-1">Name</th>
-      <th class="border px-2 py-1">Zeit</th>
+      <th class="border px-2 py-1"><b></b>ID</b></th>
+      <th class="border px-2 py-1"><b></b>Profilname</b></th>
+      <th class="border px-2 py-1"><b></b>Password</b></th>
+      <th class="border px-2 py-1"><b>Zeit</b></th>
     </tr>
   </thead>
   <tbody></tbody>

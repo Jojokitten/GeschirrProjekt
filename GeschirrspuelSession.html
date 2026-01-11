@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<title>Geschirrspüler-Projekt</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="stylesheet" href="styles.css">
+
+<style class="volume">body{
+  background: #f9f9f9;
+}
+
+
+#volume-slider{
+  align-items: center;
+  display    : flex;
+  margin     : 3em auto;
+  padding    : 30px 0;
+  width      : 265px;
+}
+
+
+.volume-icon{
+  cursor          : pointer;
+  height          : 60px;
+  transform       : rotate(-0deg);
+  transform-origin: center left;
+  width           : 60px;
+
+  .volume-icon-bg{
+    fill      : #100100;
+    transition: fill 300ms;
+  }
+
+  &:hover .volume-icon-bg{
+    fill: #b6aebf;
+  }
+
+}
+
+
+#circle-mask-shape{
+  transform       : scale(0);
+  transform-origin: center center;
+}
+
+
+.volume-track{
+  background-color: #e1dee5;
+  border-radius   : 3px;
+  flex            : 1;
+  height          : 4px;
+  margin-left     : 5px;
+  position        : relative;
+}
+
+
+.volume-indicator{
+  background-color: #6eaa35;
+  border-radius   : 50%;
+  height          : 12px;
+  left            : 0;
+  position        : absolute;
+  top             : -4px;
+  transition      : visibility 100ms, opacity 100ms;
+  width           : 12px;
+}</style>
+<style class="Stopuhrrrr">
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background-color: rgb(230, 173, 204);}
+.container {
+    padding-top: 20px; /* Simuliert SafeAreaView top */
+    min-height: 100vh;}
+.scroll-content {
+    padding: 20px;
+    padding-bottom: 100px; /* Platz für Scroll-Ende */}
+.timer-card {
+    border-radius: 20px;
+    overflow: hidden;
+  margin: -150px 0 30px 0; 
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25); /* Simulation von Elevation/Shadow */}
+.timer-gradient {
+    padding: 30px;
+    text-align: center;
+    background: linear-gradient(135deg, #eb71ae, #d71c79); /* Konvertierter LinearGradient */}
+.timer-text {
+    font-size: 56px;
+    font-weight: bold;
+    color: #fff;
+    letter-spacing: 2px;
+    margin: 0;}
+.timer-label {
+    font-size: 14px;
+    color: #fff;
+    margin-top: 10px;
+    opacity: 0.9;}
+.controls-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;}
+.button-row {
+    display: flex;
+    gap: 15px;}
+.control-button {
+    flex: 1;
+    height: 80px;
+    border-radius: 15px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    border: none;
+    cursor: pointer;
+    padding: 0;}
+.control-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;}
+.start-button {
+    background-color: rgb(34, 139, 34);
+    color: #fff;}
+.pause-button {
+    background-color: rgb(255, 140, 0);
+    color: #fff;}
+.save-button {
+    background-color: rgb(137, 1, 44);
+    color: #fff;}
+.reset-button {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 2px solid rgb(191, 27, 142);
+    flex-direction: row;
+    height: 60px;
+    color: rgb(137, 1, 44);
+    font-size: 16px;
+    font-weight: bold;
+    padding-bottom: -500px;}
+.control-button span {
+    font-size: 30px; /* Für die Iconsymbole */}
+.reset-button span:first-child {
+    font-size: 24px;
+    margin-right: 5px;
+    color: rgb(137, 1, 44);}
+.reset-text {
+    color: rgb(137, 1, 44);
+    font-weight: bold;}
+.saved-times-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: -100px;}
+.saved-times-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;}
+.saved-times-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: rgb(137, 1, 44);
+    margin: 0;}
+.clear-button {
+    padding: 8px 15px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    border: 1px solid rgb(191, 27, 142);
+    cursor: pointer;
+}
+
+.clear-button-text {
+    color: rgb(137, 1, 44);
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.saved-times-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.saved-time-item {
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    padding: 15px;
+    gap: 15px;
+    border: 1px solid rgb(191, 27, 142);
+}
+
+.saved-time-number {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: rgb(137, 1, 44);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.saved-time-number-text {
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.saved-time-text {
+    font-size: 20px;
+    font-weight: 600;
+    color: rgb(137, 1, 44);
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+/* Total Time */
+.total-time-card {
+    border-radius: 15px;
+    overflow: hidden;
+    margin-top: 10px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.total-time-gradient {
+    padding: 20px;
+    text-align: center;
+    background: linear-gradient(135deg, #d71c79, #b92d71); /* Konvertierter LinearGradient */
+}
+
+.total-time-label {
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 5px;
+    opacity: 0.9;
+}
+
+.total-time-text {
+    font-size: 32px;
+    font-weight: bold;
+    color: #fff;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+.hidden {
+    display: none;
+}
+</style>
+<style class="Backgroundglowww"> 
+.loader {
+  --color-one: #ffbf48;
+  --color-two: #be4a1d;
+  --color-three: #ffbf4780;
+  --color-four: #bf4a1d80;
+  --color-five: #ffbf4740;
+  --time-animation: 2s;
+  --size: 10; /* You can change the size */
+  position: relative;
+  transform: scale(var(--size));
+  animation: colorize calc(var(--time-animation) * 3) ease-in-out infinite;
+z-index: -1;
+top:400px;
+left:5800px;
+}
+
+.loader::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border-top: solid 1px var(--color-one);
+  border-bottom: solid 1px var(--color-two);
+  background: linear-gradient(180deg, var(--color-five), var(--color-four));
+  box-shadow:
+    inset 0 10px 10px 0 var(--color-three),
+    inset 0 -10px 10px 0 var(--color-four);
+}
+
+.loader .box {
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(
+    180deg,
+    var(--color-one) 30%,
+    var(--color-two) 70%
+  );
+  mask: url(#clipping);
+  -webkit-mask: url(#clipping);
+}
+
+.loader svg {
+  position: absolute;}
+.loader svg #clipping {
+  filter: contrast(15);
+  animation: roundness calc(var(--time-animation) / 2) linear infinite;}
+.loader svg #clipping polygon {
+  filter: blur(7px);}
+.loader svg #clipping polygon:nth-child(1) {
+  transform-origin: 75% 25%;
+  transform: rotate(90deg);
+}
+
+.loader svg #clipping polygon:nth-child(2) {
+  transform-origin: 50% 50%;
+  animation: rotation var(--time-animation) linear infinite reverse;
+}
+
+.loader svg #clipping polygon:nth-child(3) {
+  transform-origin: 50% 60%;
+  animation: rotation var(--time-animation) linear infinite;
+  animation-delay: calc(var(--time-animation) / -3);
+}
+
+.loader svg #clipping polygon:nth-child(4) {
+  transform-origin: 40% 40%;
+  animation: rotation var(--time-animation) linear infinite reverse;
+}
+
+.loader svg #clipping polygon:nth-child(5) {
+  transform-origin: 40% 40%;
+  animation: rotation var(--time-animation) linear infinite reverse;
+  animation-delay: calc(var(--time-animation) / -2);
+}
+
+.loader svg #clipping polygon:nth-child(6) {
+  transform-origin: 60% 40%;
+  animation: rotation var(--time-animation) linear infinite;
+}
+
+.loader svg #clipping polygon:nth-child(7) {
+  transform-origin: 60% 40%;
+  animation: rotation var(--time-animation) linear infinite;
+  animation-delay: calc(var(--time-animation) / -1.5);
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes roundness {
+  0% {
+    filter: contrast(15);
+  }
+  20% {
+    filter: contrast(3);
+  }
+  40% {
+    filter: contrast(3);
+  }
+  60% {
+    filter: contrast(15);
+  }
+  100% {
+    filter: contrast(15);
+  }
+}
+
+@keyframes colorize {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  20% {
+    filter: hue-rotate(-30deg);
+  }
+  40% {
+    filter: hue-rotate(-60deg);
+  }
+  60% {
+    filter: hue-rotate(-90deg);
+  }
+  80% {
+    filter: hue-rotate(-45deg);
+  }
+  100% {
+    filter: hue-rotate(0deg);
+  }
+}
+</style>
+<script src="script.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const SAVED_TIMES_KEY = 'saved_times';
+        
+        const timerDisplay = document.getElementById('timerDisplay');
+        const startButton = document.getElementById('startButton');
+        const saveButton = document.getElementById('saveButton');
+        const resetButton = document.getElementById('resetButton');
+        const clearAllButton = document.getElementById('clearAllButton');
+        const savedTimesList = document.getElementById('savedTimesList');
+        const savedTimesSection = document.querySelector('.saved-times-section');
+        const totalTimeDisplay = document.getElementById('totalTimeDisplay');
+        const flameAnimation = document.querySelector('.loader');
+        const savedTime = document.querySelector('.saved-times-section');
+
+        let time = 0; // Zeit in Millisekunden
+        let isRunning = false;
+        let intervalId = null;
+        let savedTimes = []; 
+        savedTime.style.marginBottom = "-100px";
+
+        const formatTime = (milliseconds) => {
+            const totalSeconds = Math.floor(milliseconds / 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        };
+        const calculateTotalTime = () => {
+            const total = savedTimes.reduce((sum, item) => sum + item.time, 0);
+            return formatTime(total); };
+        const updateTimerDisplay = () => {
+            timerDisplay.textContent = formatTime(time);
+            saveButton.disabled = time === 0;
+            updateStartButton(); // Aktualisiert Start/Pause-Button
+        };
+
+        const renderSavedTimes = () => {
+            savedTimesList.innerHTML = ''; // Liste leeren
+            
+            if (savedTimes.length === 0) {
+                savedTimesSection.classList.add('hidden');
+                totalTimeDisplay.textContent = formatTime(0);
+                return;
+            }
+
+            savedTimesSection.classList.remove('hidden');
+            
+            savedTimes.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'saved-time-item';
+                
+                itemDiv.innerHTML = `
+                    <div class="saved-time-number">
+                        <p class="saved-time-number-text">${index + 1}</p>
+                    </div>
+                    <p class="saved-time-text">${formatTime(item.time)}</p>
+                `;
+                savedTimesList.appendChild(itemDiv);
+            });
+
+            totalTimeDisplay.textContent = calculateTotalTime();
+        };
+
+        const updateStartButton = () => {
+            if (!flameAnimation) return;
+            if (isRunning) {
+                startButton.className = 'control-button pause-button';
+                startButton.innerHTML = '<span>❚❚</span> <span>Pause</span>';
+                 flameAnimation.style.visibility = 'visible';
+            } else {
+                startButton.className = 'control-button start-button';
+                startButton.innerHTML = '<span>▶</span> <span>Start</span>';
+                flameAnimation.style.visibility = 'hidden';
+            }
+        };
+
+        const saveTimes = () => {
+            try {
+                localStorage.setItem(SAVED_TIMES_KEY, JSON.stringify(savedTimes));
+            } catch (error) {
+                console.error('Error saving times:', error);
+            }
+        };
+
+        const loadSavedTimes = () => {
+            try {
+                const savedData = localStorage.getItem(SAVED_TIMES_KEY);
+                if (savedData !== null) {
+                    savedTimes = JSON.parse(savedData);
+                    renderSavedTimes();
+                }
+            } catch (error) {
+                console.error('Error loading saved times:', error);
+            }
+        };
+
+
+        // --- 6. Event Handler Logik ---
+
+        const handleStartPause = () => {
+            if (isRunning) {
+                // PAUSE
+                clearInterval(intervalId);
+                intervalId = null;
+                isRunning = false;
+            } else {
+                // START
+                intervalId = setInterval(() => {
+                    time += 1000; // Zählt in 1-Sekunden-Schritten
+                    updateTimerDisplay();
+                }, 1000); // Intervall auf 1000ms (1 Sekunde) gesetzt
+                isRunning = true;
+            }
+            updateStartButton();
+        };
+
+        const handleSave = () => {
+            if (time > 0) {
+                // Pause erzwingen, wenn gespeichert wird
+                if (isRunning) {
+                    handleStartPause(); // Pausiert den Timer
+                }
+
+                const newSavedTime = {
+                    id: Date.now().toString(),
+                    time: time,
+                    // Im Browser speichern wir das Datum als String
+                    timestamp: new Date().toISOString(), 
+                };
+                
+                // Neue Zeit hinzufügen und State aktualisieren
+                savedTimes.push(newSavedTime);
+                
+                // Timer zurücksetzen
+                time = 0;
+                updateTimerDisplay();
+                
+                // UI und LocalStorage aktualisieren
+                renderSavedTimes();
+                saveTimes();
+            }
+        };
+
+        const handleReset = () => {
+            // Stoppen und zurücksetzen
+            if (isRunning) {
+                handleStartPause(); }
+            time = 0;
+            updateTimerDisplay();
+        };
+
+        const handleClearAll = () => {
+            savedTimes = [];
+            saveTimes();
+            renderSavedTimes();
+            
+            savedTime.style.marginBottom = "-500px";
+        };
+
+        startButton.addEventListener('click', handleStartPause);
+        saveButton.addEventListener('click', handleSave);
+        resetButton.addEventListener('click', handleReset);
+        clearAllButton.addEventListener('click', handleClearAll);
+
+        loadSavedTimes();
+        updateTimerDisplay(); 
+    });
+</script>
+<script class="volume"> 
+document.addEventListener("DOMContentLoaded", () => {
+class VolumeSlider {
+
+  constructor() {
+    this.slider = document.getElementById('volume-slider');
+    this.icon = document.getElementById('volume-icon');
+    this.indicator = document.getElementById('volume-indicator');
+    this.shape = document.getElementById('circle-mask-shape');
+    this.input = document.getElementById('volume-input');
+
+    this._lock = false;
+    this._charging = false;
+    this._charge = 0;
+    this._volume = 0;
+
+    this.input.value = this._volume;
+
+    this.icon.addEventListener('mousedown', () => {this.charge();});
+    this.icon.addEventListener('mouseup', () => {this.release(this._charge);});
+    this.icon.addEventListener('touchstart', () => {this.charge();});
+    this.icon.addEventListener('touchend', () => {this.release(this._charge);});
+  }
+
+
+  /**
+   * Begin charge cycle
+   */
+  charge() {
+    if (this._lock) {return false;}
+    this._lock = true;
+
+    // Reset
+    this._charge = 0;
+    this._charging = true;
+
+    // Hide indicator
+    //this.indicator.style.visibility = 'hidden';
+    // this.indicator.style.opacity    = '0';
+
+    /**
+     * Charge loop
+     */
+    let cycle = () => {
+      if (this._charging && ++this._charge < 100) {
+        requestAnimationFrame(() => {
+          cycle();
+        });
+      }
+
+      // Update icon styles
+      this.shape.style.transform = `scale(${this._charge / 100})`;
+      this.icon.style.transform = `rotate(${-0.35 * this._charge}deg)`;
+    };
+
+    setTimeout(() => cycle(), 100);
+  }
+
+
+  /**
+   * Release and fire based on charge
+   * @param  {float} charge
+   */
+  release(charge) {
+    // Reset charge animation
+    this._charging = false;
+    requestAnimationFrame(() => {this.shape.style.transform = `scale(0)`;});
+
+    // Animation vars
+    let y_cap = charge * 0.35,
+    y_start = -0.3 * charge,
+    x_cap = charge * 2,
+    x_start = -10,
+    duration = 20 + 4 * charge,
+    start = new Date().getTime(),
+    volume = this._volume,
+    rotate;
+
+    // Y animation
+    let y_swap = duration * 0.55;
+
+    let y_duration_up = y_swap,
+    y_duration_down = duration - y_swap;
+
+    let y = y_start,
+    y_diff_up = -y_cap,
+    y_diff_down = y_cap - y_start;
+
+    // X animation
+    let x = x_cap,
+    x_diff = x_cap - 10;
+
+    // Display indicator
+    this.indicator.style.visibility = 'visible';
+    this.indicator.style.opacity = '1';
+
+    /**
+     * Animation loop
+     */
+    let animate = () => {
+      let elapsed = new Date().getTime() - start;
+
+      if (elapsed < duration) {
+        // Animate
+        requestAnimationFrame(() => {animate();});
+
+        if (elapsed < y_duration_up) {
+          // Y up
+          y = this.easeOut(elapsed, y_start, y_diff_up, y_duration_up);
+        } else {
+          // Y down
+          y = this.easeIn(elapsed - y_duration_up, y_start - y_cap, y_diff_down, y_duration_down);
+        }
+
+        // Set values
+        x = this.linearTween(elapsed, 0, x_diff, duration);
+        rotate = this.easeInOut(elapsed, -1.5 * this._charge, 1.5 * this._charge, duration);
+        this._volume = this.easeOut(elapsed, volume, charge - volume, duration);
+      } else {
+        // End of animation
+        this._lock = false;
+
+        // Set values
+        x = x_cap;
+        y = 0;
+        rotate = 0;
+        this._volume = charge;
+      }
+
+      // Render values
+      this.icon.style.transform = `rotate(${rotate}deg)`;
+      this.indicator.style.transform = `translateX(${x}px) translateY(${y}px)`;
+      this.input.value = this._volume;
+    };
+
+    animate();
+  }
+
+
+  /**
+   * Linear progression
+   */
+  linearTween(t, b, c, d) {
+    return c * t / d + b;
+  }
+
+
+  /**
+   * Cubic ease-in progression
+   */
+  easeIn(t, b, c, d) {
+    t /= d;
+    return c * t * t * t + b;
+  }
+
+
+  /**
+   * Cubic ease-out progression
+   */
+  easeOut(t, b, c, d) {
+    t /= d;
+    t--;
+    return c * (t * t * t + 1) + b;
+  }
+
+
+  /**
+   * Cubic ease-in-out progression
+   */
+  easeInOut(t, b, c, d) {
+    t /= d / 2;
+    if (t < 1) {
+      return c / 2 * t * t * t + b;
+    }
+    t -= 2;
+    return c / 2 * (t * t * t + 2) + b;
+  }}
+
+
+
+
+
+new VolumeSlider();
+});
+</script>
+
+<body>
+    <h1>Stopuhr <3</h1>
+  <ul class="navBar">
+    <li><a href="index.html">Geschirspüler-Liste</a></li>
+    <li><a href="statistic.html">Statistik</a></li>
+    <li><a href="motivation.html">Motivation</a></li>
+        <li><a href="geschirrspühl-tagebuch.html">Geschirrspühl-Tagebuch</a></li>
+        <li><a href="genshin.html">Genshin ✨</a></li>
+     <li><a href="profile.html">Profile</a></li>
+  </ul>
+<button onclick="window.location.href='GeschirrspühlSession.html'" class="startGeschirrspühlsession"> +&nbsp;&nbsp;&nbsp;&nbsp;Start Geschirrspühl-Session</button>
+<div class="loader">
+  <svg width="100" height="100" viewBox="0 0 100 100">
+    <defs>
+      <mask id="clipping">
+        <polygon points="0,0 100,0 100,100 0,100" fill="black"></polygon>
+        <polygon points="25,25 75,25 50,75" fill="white"></polygon>
+        <polygon points="50,25 75,75 25,75" fill="white"></polygon>
+        <polygon points="35,35 65,35 50,65" fill="white"></polygon>
+        <polygon points="35,35 65,35 50,65" fill="white"></polygon>
+        <polygon points="35,35 65,35 50,65" fill="white"></polygon>
+        <polygon points="35,35 65,35 50,65" fill="white"></polygon>
+      </mask>
+    </defs>
+  </svg>
+  <div class="box"></div>
+</div>
+<div class="container">
+        <div class="scroll-content">
+
+            <div class="timer-card">
+                <div class="timer-gradient">
+                    <p class="timer-text" id="timerDisplay">00:00:00</p>
+                    <p class="timer-label">Hours : Minutes : Seconds</p>
+                </div>
+            </div>
+
+            <div class="controls-container">
+                <div class="button-row">
+                    <button class="control-button start-button" id="startButton">
+                        <span>▶</span> <span>Start</span>
+                    </button>
+                    <button class="control-button save-button" id="saveButton" disabled>
+                        <span>⬇</span> <span>Save</span>
+                    </button>
+                </div>
+
+                <button class="control-button reset-button" id="resetButton">
+                    <span>↺</span> <span class="reset-text">Reset</span>
+                </button>
+            </div>
+
+            <div class="saved-times-section hidden">
+                <div class="saved-times-header">
+                    <p class="saved-times-title">Saved Times</p>
+                    <button class="clear-button" id="clearAllButton">
+                        <p class="clear-button-text">Clear All</p>
+                    </button>
+                </div>
+
+                <div class="saved-times-list" id="savedTimesList">
+                    </div>
+
+                <div class="total-time-card">
+                    <div class="total-time-gradient">
+                        <p class="total-time-label">Total Time</p>
+                        <p class="total-time-text" id="totalTimeDisplay">00:00:00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="playlist-container">
+        <h1>🎧 Playlist</h1>
+        
+        <div id="songTitle" class="song-title">Song wird geladen...</div>
+
+        <video id="videoPlayer" preload="auto"></video>
+
+        <div class="controls">
+            <button id="prevBtn" class="control-btn">⏮</button>
+            <button id="playPauseBtn" class="control-btn">▶</button>
+            <button id="nextBtn" class="control-btn">⏭</button>
+            </div>
+        <img  class="FurinaGif2 FurinaGifStyle" src="images/playlistFurina2.gif"></img>
+        <video class="FurinaGif1 FurinaGifStyle" src="images/furinaGif1.mp4"></video>
+    </div>
+
+<div id="volume-slider">
+  <svg id="volume-icon" class="volume-icon" viewBox="-1 0 33 32">
+    <defs>
+      <mask id="circle-mask" x="-1" y="0" width="33" height="32">
+        <circle cx="-1" cy="16" r="33" fill="white" id="circle-mask-shape" />
+      </mask>
+
+      <mask id="volume-mask" x="-1" y="0" width="33" height="32">
+        <path d="M22.485 25.985c-0.384 0-0.768-0.146-1.061-0.439-0.586-0.586-0.586-1.535 0-2.121 4.094-4.094 4.094-10.755 0-14.849-0.586-0.586-0.586-1.536 0-2.121s1.536-0.586 2.121 0c2.55 2.55 3.954 5.94 3.954 9.546s-1.404 6.996-3.954 9.546c-0.293 0.293-0.677 0.439-1.061 0.439v0zM17.157 23.157c-0.384 0-0.768-0.146-1.061-0.439-0.586-0.586-0.586-1.535 0-2.121 2.534-2.534 2.534-6.658 0-9.192-0.586-0.586-0.586-1.536 0-2.121s1.535-0.586 2.121 0c3.704 3.704 3.704 9.731 0 13.435-0.293 0.293-0.677 0.439-1.061 0.439zM13 30c-0.26 0-0.516-0.102-0.707-0.293l-7.707-7.707h-3.586c-0.552 0-1-0.448-1-1v-10c0-0.552 0.448-1 1-1h3.586l7.707-7.707c0.286-0.286 0.716-0.372 1.090-0.217s0.617 0.519 0.617 0.924v26c0 0.404-0.244 0.769-0.617 0.924-0.124 0.051-0.254 0.076-0.383 0.076z" fill="white" mask="url(#circle-mask)"></path>
+      </mask>
+
+      <linearGradient id="grad-1" x1="0" x2="1" y1="0" y2="0">
+        <stop offset="20%" stop-color="#9a88aa" />
+        <stop offset="100%" stop-color="#6e33a5" />
+      </linearGradient>
+    </defs>
+
+    <path class="volume-icon-bg" fill="#cbc8ce" d="M22.485 25.985c-0.384 0-0.768-0.146-1.061-0.439-0.586-0.586-0.586-1.535 0-2.121 4.094-4.094 4.094-10.755 0-14.849-0.586-0.586-0.586-1.536 0-2.121s1.536-0.586 2.121 0c2.55 2.55 3.954 5.94 3.954 9.546s-1.404 6.996-3.954 9.546c-0.293 0.293-0.677 0.439-1.061 0.439v0zM17.157 23.157c-0.384 0-0.768-0.146-1.061-0.439-0.586-0.586-0.586-1.535 0-2.121 2.534-2.534 2.534-6.658 0-9.192-0.586-0.586-0.586-1.536 0-2.121s1.535-0.586 2.121 0c3.704 3.704 3.704 9.731 0 13.435-0.293 0.293-0.677 0.439-1.061 0.439zM13 30c-0.26 0-0.516-0.102-0.707-0.293l-7.707-7.707h-3.586c-0.552 0-1-0.448-1-1v-10c0-0.552 0.448-1 1-1h3.586l7.707-7.707c0.286-0.286 0.716-0.372 1.090-0.217s0.617 0.519 0.617 0.924v26c0 0.404-0.244 0.769-0.617 0.924-0.124 0.051-0.254 0.076-0.383 0.076z"></path>
+
+    <rect x="-1" y="0" width="33" height="32" mask="url(#volume-mask)" fill="url(#grad-1)" />
+  </svg>
+
+  <div class="volume-track">
+    <span id="volume-indicator" class="volume-indicator"></span>
+    <input type="hidden" name="volume" id="volume-input" />
+  </div>
+</div>
+</body>
+
+</html>

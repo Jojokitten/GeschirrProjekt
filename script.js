@@ -6,50 +6,89 @@
   const fistEnterPageBtn = document.getElementById('fistEnterPageBtn');
   const loginDiv = document.getElementById('login');
   const loginBtn = document.querySelector('.loginBtn');
-
+  const inputName = document.getElementById('enterName');
+  const inputPassword = document.getElementById('enterPassword');
 
   if (fistEnterPageBtn) {
-
-    if (fistEnterPageDiv) fistEnterPageDiv.style.display = 'block';
 
 
     fistEnterPageBtn.addEventListener('click', () => {
       if (fistEnterPageDiv) fistEnterPageDiv.style.display = 'none';
       if (document && document.body) document.body.style.overflow = 'auto';
+
       console.log('enter page button clicked');
     });
+
   }
 
+  
   if (loginBtn) {
-
-    if (loginDiv) loginDiv.style.display = 'block';
-
-
+    
     loginBtn.addEventListener('click', () => {
       if (inputName.value.trim() !== "") {
-        if (loginDiv) loginDiv.style.display = 'none';
-        if (document && document.body) document.body.style.overflow = 'auto';
+
+
+        sendMockAPI(inputName.value, inputPassword.value);
         console.log('enter page button clicked');
+
+let showLoginpageTimerId;
+  if (localStorage.getItem('userLoggedIn') === 'true') {
+    hideLoginpage();
+  }
+
+  
+    const timeIsUp = 120;
+
+
+
+  setTimeout(() => {
+  loginDiv.style.display = 'block';
+}, timeIsUp);
+
+  function hideLoginpage() {
+
+        if (document && document.body) document.body.style.overflow = 'auto';
+
+        if (fistEnterPageDiv) fistEnterPageDiv.style.display = 'none';
+        if (loginDiv) loginDiv.style.display = 'none';
+  }
+
+
+
+if (showLoginpageTimerId) {
+  clearTimeout(showLoginpageTimerId); 
+  console.log("worked")
       }
+
+        hideLoginpage();
+        localStorage.setItem('userLoggedIn', 'true');
+      }
+
 
       else if (nameLableRed && nameLableGreen && inputName) {
 
         myAlert("Gib einen Namen ein oder du wirst hier für immer steckenbleiben. PS: es gibt ein Easteregg. :)");
-
       };
     });
   }
 
 
 
+
+
   const nameLableRed = document.getElementById('labelNameRed');
   const nameLableGreen = document.getElementById('labelNameGreen');
-  const inputName = document.getElementById('enterName');
   const minniImg = document.getElementById('minniImg');
 
+  const passwordLableRed = document.getElementById('labelPasswordRed');
+  const passwordLableGreen = document.getElementById('labelPasswordGreen');
+
   if (nameLableRed && nameLableGreen && inputName) {
+    passwordLableGreen.style.display = 'none';
     nameLableGreen.style.display = 'none';
     minniImg.style.display = 'none';
+
+    
     inputName.addEventListener('input', () => {
       if (inputName.value.trim() !== "") {
         loginBtn.onclick = null;
@@ -61,6 +100,7 @@
         minniImg.style.display = 'none';
         nameLableGreen.style.display = 'none';
         nameLableRed.style.display = 'block';
+        console.log("noMockAPi send")
       }
 
       const possibleProfileNames = ["Minni", "minni", "MINNI", "mini", "Mini", "lena", "Lena"];
@@ -77,7 +117,22 @@
     )
 
 
+    inputPassword.addEventListener('input', () => {
+      if (inputPassword.value.trim() !== "") {
+        loginBtn.onclick = null;
+        loginBtn.style.display = 'block';
+        passwordLableGreen.style.display = 'block';
+        passwordLableRed.style.display = 'none';
+      }
+      else {
+        passwordLableGreen.style.display = 'none';
+        passwordLableRed.style.display = 'block';
+        console.log("noMockAPi send")
+      }
+    }
+    )
   }
+
 }
 
 //1. tagebuch
@@ -91,7 +146,7 @@
     <li><a href="motivation.html">Motivation</a></li>
         <li><a href="geschirrspühl-tagebuch.html">Geschirrspühl-Tagebuch</a></li>
     <li><a href="profile.html">Profile</a></li>
-  </ul> 
+  </ul>
      <h1>1. Wie gings dir bei der schicht?</h1>
      <img class="kleedance" src="images/3875-klee.png" alt="klee">
      <p class="wähle">Wähle:</p>
@@ -100,13 +155,13 @@
             <button class="tagebuch-sticker" data-mood="cry"><img class="paimon" src="images/1235-paimon-cry.png" alt="paimon" height="100px" width="100px"></button>
             <button class="tagebuch-sticker" data-mood="raiden"><img src="https://cdn3.emoji.gg/emojis/55978-boobasword.gif" width="100px" height="100px" alt="boobasword"></button>
         </div>
-        
+
      <h1>2. Wie lange hast du dafür gebraucht?</h1>
   <input type="time" id="uhrzeit">
   <button class="TagebuchEintragSave" id="saveTime">Eintrag speichern</button>
 <img class="catTimeGif" src="images/catTime.gif" alt="time">
 
-<div> 
+<div>
 <label class="custum-file-upload" for="file">
 <div class="icon">
 <svg xmlns="http://www.w3.org/2000/svg" fill="" viewBox="0 0 24 24"><g stroke-width="0" id="SVGRepo_bgCarrier"></g><g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"></g><g id="SVGRepo_iconCarrier"> <path fill="" d="M10 1C9.73478 1 9.48043 1.10536 9.29289 1.29289L3.29289 7.29289C3.10536 7.48043 3 7.73478 3 8V20C3 21.6569 4.34315 23 6 23H7C7.55228 23 8 22.5523 8 22C8 21.4477 7.55228 21 7 21H6C5.44772 21 5 20.5523 5 20V9H10C10.5523 9 11 8.55228 11 8V3H18C18.5523 3 19 3.44772 19 4V9C19 9.55228 19.4477 10 20 10C20.5523 10 21 9.55228 21 9V4C21 2.34315 19.6569 1 18 1H10ZM9 7H6.41421L9 4.41421V7ZM14 15.5C14 14.1193 15.1193 13 16.5 13C17.8807 13 19 14.1193 19 15.5V16V17H20C21.1046 17 22 17.8954 22 19C22 20.1046 21.1046 21 20 21H13C11.8954 21 11 20.1046 11 19C11 17.8954 11.8954 17 13 17H14V16V15.5ZM16.5 11C14.142 11 12.2076 12.8136 12.0156 15.122C10.2825 15.5606 9 17.1305 9 19C9 21.2091 10.7909 23 13 23H20C22.2091 23 24 21.2091 24 19C24 17.1305 22.7175 15.5606 20.9844 15.122C20.7924 12.8136 18.858 11 16.5 11Z" clip-rule="evenodd" fill-rule="evenodd"></path> </g></svg>
@@ -130,7 +185,7 @@
     <li><a href="motivation.html">Motivation</a></li>
         <li><a href="geschirrspühl-tagebuch.html">Geschirrspühl-Tagebuch</a></li>
    <li><a href="profile.html">Profile</a></li>
-  </ul> 
+  </ul>
   <img class="furinaBackToWork" src="images/furina-angry.jpg" alt="furina" height="300px" width="300px">
   <button class="backToWork" onclick="window.location.href='Geschirrspüler-Projekt.html'">Back to work!</button> `;
   }
@@ -200,115 +255,174 @@
   });
 }
 
+//statistic
+{
+  const statisticJohannaButton = document.querySelector('.statisticJohanna');
+  const statisticLenaButton = document.querySelector('.statisticLena');
+  const statisticJohannaChart = document.querySelector('.statisticChartJohanna');
+  const statisticLenaChart = document.querySelector('.statisticChartLena');
+
+  if (statisticJohannaButton) {
+    statisticLenaChart.style.display = 'none';
+    statisticJohannaChart.style.display = 'none';
+
+    statisticJohannaButton.addEventListener('click', () => {
+      statisticLenaChart.style.display = 'none';
+      statisticJohannaChart.style.display = 'block';
+    });
+
+    statisticLenaButton.addEventListener('click', () => {
+      statisticJohannaChart.style.display = 'none';
+      statisticLenaChart.style.display = 'block';
+    });
+      
+
+
+
+    const stickerCountsKey = 'stickerCounts';
+        
+    if (!statisticJohannaButton) {
+      console.error("Platzhalter-Element 'mostUsedStickerDisplay' nicht gefunden.");
+    }
+
+    // 1. Gespeicherte Zähler laden
+    const stickerCounts = JSON.parse(localStorage.getItem(stickerCountsKey) || "{}");
+
+    let mostSelectedMood = 'Kein Sticker ausgewählt';
+    let maxCount = 0;
+
+    // Finde den Eintrag mit der höchsten Zählung
+    for (const mood in stickerCounts) {
+      if (stickerCounts[mood] > maxCount) {
+        maxCount = stickerCounts[mood];
+        mostSelectedMood = mood;
+      }
+    }
+
+    // 3. Ergebnis im HTML anzeigen
+    if (maxCount > 0) {
+      let mostSelectedMood = mood.display;
+      maxCount();
+      ;
+    } else {
+      mostSelectedMood = "Noch keine Sticker-Daten vorhanden.";
+    }
+  }
+}
+
+
 //mit api zählen welches lied man am häufigsten gehört hat
-//PLAYLIST 
+//PLAYLIST
 {
   document.addEventListener('DOMContentLoaded', () => {
-    const playlist = [
-      { index: 0, title: "Tolles Lied 1", src: "playlist/kafka.mp4" },
-      { title: "Ganz Tolles Billie Eilish Lied", src: "playlist/ilomilo.mp4" },
-      { title: "Kaffee", src: "playlist/Espresso.mp4" }
-    ];
+    if (window.location.pathname.endsWith("GeschirrspühlSession.html")) {
+      const playlist = [
+        { index: 0, title: "Tolles Lied 1", src: "playlist/kafka.mp4" },
+        { title: "Ganz Tolles Billie Eilish Lied", src: "playlist/ilomilo.mp4" },
+        { title: "Kaffee", src: "playlist/Espresso.mp4" }
+      ];
 
-    const videoPlayer = document.getElementById('videoPlayer');
-    const songTitleDisplay = document.getElementById('songTitle');
-    const playPauseBtn = document.getElementById('playPauseBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const prevBtn = document.getElementById('prevBtn');
-
-
-    if (!videoPlayer) {
-      if (window.location.pathname.endsWith("GeschirrspühlSession.html")) {
-        console.warn('videoPlayer-Element nicht gefunden.');
-        return;
-      }
-    }//trowWarning
+      const videoPlayer = document.getElementById('videoPlayer');
+      const songTitleDisplay = document.getElementById('songTitle');
+      const playPauseBtn = document.getElementById('playPauseBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const prevBtn = document.getElementById('prevBtn');
 
 
-    const FurinaGif = document.querySelector('.FurinaGif2');
-    const furinaVideo1 = document.querySelector('.FurinaGif1');
+      if (!videoPlayer) {
+        if (window.location.pathname.endsWith("GeschirrspühlSession.html")) {
+          console.warn('videoPlayer-Element nicht gefunden.');
+          return;
+        }
+      }//trowWarning
 
-    let currentSongIndex = 0;
-    let isPlaying = false;
 
-    const updateFurinaVisibility = (isCurrentlyPlaying) => {
-      if (!furinaVideo1) return;
-      const isEspresso = currentSongIndex === 2;
-      const isFurina = currentSongIndex === 4;
-      if (isEspresso && isCurrentlyPlaying) {
-        furinaVideo1.style.visibility = 'visible';
-        videoPlayer.style.opacity = "0.1";
-      } else {
-        furinaVideo1.style.visibility = 'hidden';
-        videoPlayer.style.opacity = "0.5";
-      }
-      if (isFurina && isCurrentlyPlaying && FurinaGif) {
-        FurinaGif.style.visibility = 'visible';
-      }
-    };
+      const FurinaGif = document.querySelector('.FurinaGif2');
+      const furinaVideo1 = document.querySelector('.FurinaGif1');
 
-    const showVideo = (isCurrentlyPlaying) => {
-      videoPlayer.style.visibility = isCurrentlyPlaying ? 'visible' : 'hidden';
-    };
+      let currentSongIndex = 0;
+      let isPlaying = false;
 
-    const loadSong = (index) => {
-      const song = playlist[index];
-      videoPlayer.src = song.src;
-      songTitleDisplay.textContent = song.title;
-      videoPlayer.load();
-      updateFurinaVisibility(isPlaying);
-    };
+      const updateFurinaVisibility = (isCurrentlyPlaying) => {
+        if (!furinaVideo1) return;
+        const isEspresso = currentSongIndex === 2;
+        const isFurina = currentSongIndex === 4;
+        if (isEspresso && isCurrentlyPlaying) {
+          furinaVideo1.style.visibility = 'visible';
+          videoPlayer.style.opacity = "0.1";
+        } else {
+          furinaVideo1.style.visibility = 'hidden';
+          videoPlayer.style.opacity = "0.5";
+        }
+        if (isFurina && isCurrentlyPlaying && FurinaGif) {
+          FurinaGif.style.visibility = 'visible';
+        }
+      };
 
-    const togglePlayPause = () => {
-      if (isPlaying) {
-        videoPlayer.pause();
-        playPauseBtn.textContent = '▶';
-        isPlaying = false;
+      const showVideo = (isCurrentlyPlaying) => {
+        videoPlayer.style.visibility = isCurrentlyPlaying ? 'visible' : 'hidden';
+      };
+
+      const loadSong = (index) => {
+        const song = playlist[index];
+        videoPlayer.src = song.src;
+        songTitleDisplay.textContent = song.title;
+        videoPlayer.load();
+        updateFurinaVisibility(isPlaying);
+      };
+
+      const togglePlayPause = () => {
+        if (isPlaying) {
+          videoPlayer.pause();
+          playPauseBtn.textContent = '▶';
+          isPlaying = false;
+          updateFurinaVisibility(isPlaying);
+          showVideo(isPlaying);
+        } else {
+          const playPromise = videoPlayer.play();
+          if (playPromise !== undefined) {
+            playPromise.then(_ => {
+              playPauseBtn.textContent = '⏸';
+              isPlaying = true;
+              updateFurinaVisibility(isPlaying);
+              showVideo(isPlaying);
+            }).catch(error => {
+              console.error("Playback fehlgeschlagen:", error);
+              playPauseBtn.textContent = '▶';
+              isPlaying = false;
+              updateFurinaVisibility(isPlaying);
+              showVideo(isPlaying);
+            });
+          }
+        }
+      };
+
+      const playNextSong = () => {
+        currentSongIndex = (currentSongIndex + 1) % playlist.length;
+        loadSong(currentSongIndex);
+        if (isPlaying) videoPlayer.play().catch(() => { });
         updateFurinaVisibility(isPlaying);
         showVideo(isPlaying);
-      } else {
-        const playPromise = videoPlayer.play();
-        if (playPromise !== undefined) {
-          playPromise.then(_ => {
-            playPauseBtn.textContent = '⏸';
-            isPlaying = true;
-            updateFurinaVisibility(isPlaying);
-            showVideo(isPlaying);
-          }).catch(error => {
-            console.error("Playback fehlgeschlagen:", error);
-            playPauseBtn.textContent = '▶';
-            isPlaying = false;
-            updateFurinaVisibility(isPlaying);
-            showVideo(isPlaying);
-          });
-        }
-      }
-    };
+      };
 
-    const playNextSong = () => {
-      currentSongIndex = (currentSongIndex + 1) % playlist.length;
+      const playPreviousSong = () => {
+        currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
+        loadSong(currentSongIndex);
+        if (isPlaying) videoPlayer.play().catch(() => { });
+        updateFurinaVisibility(isPlaying);
+        showVideo(isPlaying);
+      };
+
+      if (playPauseBtn) playPauseBtn.addEventListener('click', togglePlayPause);
+      if (nextBtn) nextBtn.addEventListener('click', playNextSong);
+      if (prevBtn) prevBtn.addEventListener('click', playPreviousSong);
+      videoPlayer.addEventListener('ended', playNextSong);
+
       loadSong(currentSongIndex);
-      if (isPlaying) videoPlayer.play().catch(() => { });
-      updateFurinaVisibility(isPlaying);
       showVideo(isPlaying);
-    };
-
-    const playPreviousSong = () => {
-      currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
-      loadSong(currentSongIndex);
-      if (isPlaying) videoPlayer.play().catch(() => { });
-      updateFurinaVisibility(isPlaying);
-      showVideo(isPlaying);
-    };
-
-    if (playPauseBtn) playPauseBtn.addEventListener('click', togglePlayPause);
-    if (nextBtn) nextBtn.addEventListener('click', playNextSong);
-    if (prevBtn) prevBtn.addEventListener('click', playPreviousSong);
-    videoPlayer.addEventListener('ended', playNextSong);
-
-    loadSong(currentSongIndex);
-    showVideo(isPlaying);
+    }
   });
+
 }
 
 //PrimoCount
@@ -577,7 +691,7 @@
 
 
 }
-//CharacterMenu 
+//CharacterMenu
 {
   //Alhaitham
 
@@ -667,9 +781,11 @@ if (window.location.pathname.endsWith("profile.html")) {
   const spiritSelect = document.getElementById("spirit");
   const saveBtn = document.getElementById("saveProfil");
 
+
+  let lastUsername = "_";
+
   //local storage
   const savedPic = localStorage.getItem("profilbild");
-  const savedName = localStorage.getItem("profilname");
   const savedSpirit = localStorage.getItem("spirit");
 
   if (savedPic) {
@@ -698,13 +814,13 @@ if (window.location.pathname.endsWith("profile.html")) {
 
 
   const ENDPOINT = "https://6920e6b5512fb4140bdec336.mockapi.io/api/geschirrspueler-ausraeumungen";
-  // ...existing code...
+
   async function loadData() {
     try {
       const response = await fetch(ENDPOINT);
       if (!response.ok) throw new Error("Fetch failed: " + response.status);
       const data = await response.json();
-      console.log("API data:", data); // -> öffne DevTools (F12) und prüfe hier die Keys
+      console.log("API data:", data);
       renderTable(data);
     } catch (err) {
       console.error("loadData error:", err);
@@ -753,33 +869,53 @@ if (window.location.pathname.endsWith("profile.html")) {
     }
 
 
-    const nameCandidates = ["person", 'name', 'profilname', 'profilename', 'title', 'username', 'vorname', 'nachname', 'fullname', 'profil'];
     const timeCandidates = ["zeitpunkt", 'zeit', 'time', 'uhrzeit', 'createdAt', 'created_at', 'date', 'timestamp', 'zeitstempel'];
 
     data.forEach(item => {
-      const id = item.id ?? item.ID ?? item._id ?? "—";
-      const name = pickField(item, nameCandidates) ?? "—";
-      const created = pickField(item, timeCandidates) ?? "—";
 
-      // If both name and created are missing, show a short JSON snippet for debugging
-      const fallback = (name === "—" && created === "—") ? `<pre style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px">${JSON.stringify(item)}</pre>` : "";
+      const id = item.id ?? item.ID ?? item._id ?? "—";
+      const password = pickField(item, ["password"]) ?? "—";
+      const username = pickField(item, ['username']) ?? "_";
+      const created = toReadableTime(pickField(item, timeCandidates)) ?? "—";
+
+      lastUsername = username;
+      
+      const fallback = (password === "—" && created === "—") ? `<pre style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px">${JSON.stringify(item)}</pre>` : "";
 
       tbody.insertAdjacentHTML("beforeend", `
       <tr>
         <td class="border px-2 py-1">${id}</td>
-        <td class="border px-2 py-1">${name}</td>
+        <td class="border px-2 py-1">${username}</td>
+        <td class="border px-2 py-1">${password}</td>
         <td class="border px-2 py-1">${created}${fallback ? "<div>" + fallback + "</div>" : ""}</td>
       </tr>
     `);
+      
+      
+function toReadableTime(ts) {
+  return new Date(ts * 1000).toLocaleString();
+}
+      
+      
+      
+      
+            if (nameInput) {
+    nameInput.value = lastUsername;
+}
     });
+
   }
 
-  // load after DOM ready to be safe
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', loadData);
   } else {
     loadData();
   }
+
+
+
+
+
 
   if (savedSpirit) {
     const optionExists = Array.from(spiritSelect.options).some(o => o.value === savedSpirit);
@@ -814,9 +950,9 @@ if (window.location.pathname.endsWith("profile.html")) {
 
   saveBtn.addEventListener("click", () => {
 
-    localStorage.setItem("profilname", nameInput.value.trim() || "");
     localStorage.setItem("spirit", spiritSelect.value || "");
 
+    API(sendMockAPI(username, password));
     alert("Profil gespeichert!");
   });
 
@@ -830,3 +966,126 @@ if (window.location.pathname.endsWith("profile.html")) {
   } window.addEventListener('scroll', limitScrollHeight);
 
 };
+
+
+
+
+
+
+
+
+
+//Stricherl
+document.addEventListener("DOMContentLoaded", () => {
+  const isIndexHTML = document.getElementById('isIndexHTML');
+  if (isIndexHTML) {
+    
+    const addLenaStricherl = document.querySelector('.addStricherlLena');
+    const addJohannaStricherl = document.querySelector('.addStricherlJohanna');
+    const countElementJohanna = document.querySelector('.stricherlCountJohanna');
+    const countElementLena = document.querySelector('.stricherlCountLena');
+    const minusLenaStricherl = document.querySelector('.minusStricherlLena');
+    const minusStricherlJohanna = document.querySelector('.minusStricherlJohanna');
+    
+    const initialLenaCount = parseInt(countElementLena.innerText);
+    const initialJohannaCount = parseInt(countElementJohanna.innerText);
+
+  
+    let countLena = parseInt(localStorage.getItem('stricherlLena')) || initialLenaCount;
+    let countJohanna = parseInt(localStorage.getItem('stricherlJohanna')) || initialJohannaCount;
+
+    // Initialen Zählerstand im DOM setzen
+    countElementLena.innerText = countLena;
+    countElementJohanna.innerText = countJohanna;
+
+    // Funktion zum Speichern der Zählerstände
+    const saveCounts = () => {
+      localStorage.setItem('stricherlLena', countLena);
+      localStorage.setItem('stricherlJohanna', countJohanna);
+    };
+
+    
+
+    //MockAPI plan -> PIN, wenn username + pin mit mock stimmen, dann passt! 
+    //im profile wird pin und username geändert und gepusht, nicht hardcodiert.
+
+
+    async function getDataforVerify(name, password) {
+      try {
+        const getPasswordAndUsername = await fetch('https://6920e6b5512fb4140bdec336.mockapi.io/api/geschirrspueler-ausraeumungen', {
+          method: 'GET',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify([{ username: name }, { password: password }]),
+        })
+        const data = await getPasswordAndUsername.json();
+        console.log("API data:", data);
+      } catch (error) {
+        console.log("faaailure = (your mockapi not working, u undertsandasta?)" + error);
+      }
+      getDataforVerify();
+
+
+    };
+
+
+
+    if (username === johanna && password === lol) {
+      // 3. Event-Listener für Johanna hinzufügen
+      if (addJohannaStricherl) {
+        addJohannaStricherl.addEventListener('click', () => {
+          countJohanna += 1;
+          countElementJohanna.innerText = countJohanna;
+          saveCounts(); // Speichern nach jeder Änderung
+        });
+      }
+    }
+  
+    // 4. Event-Listener für Lena hinzufügen
+    if (addLenaStricherl) {
+      addLenaStricherl.addEventListener('click', () => {
+        countLena += 1;
+        countElementLena.innerText = countLena;
+        saveCounts(); // Speichern nach jeder Änderung
+      });
+    }
+    if (minusLenaStricherl) {
+      minusLenaStricherl.addEventListener('click', () => {
+        if (countLena > 277) {
+          countLena -= 1;
+          countElementLena.innerText = countLena;
+          saveCounts(); // Speichern nach jeder Änderung
+        }
+      });
+    }
+    if (minusStricherlJohanna) {
+      minusStricherlJohanna.addEventListener('click', () => {
+        if (countJohanna > 294) {
+          countJohanna -= 1;
+          countElementJohanna.innerText = countJohanna;
+          saveCounts(); // Speichern nach jeder Änderung
+        }
+      });
+    }
+  }
+});
+
+
+
+
+
+  //MockAPI
+function API() {
+  async function sendMockAPI(name, password) {
+    try {
+      const pushUserData = await fetch('https://6920e6b5512fb4140bdec336.mockapi.io/api/geschirrspueler-ausraeumungen', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ username: name , password: password}),
+      })
+      const data = await pushUserData.json();
+      console.log("API data:", data);
+    } catch(error){
+      console.log("faaailure = (your mockapi not working, u undertsandasta?)" + error);
+    }
+
+  };}

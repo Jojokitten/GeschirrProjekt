@@ -81,7 +81,7 @@ width: 260px;}
     <li><a href="motivation.html">Motivation</a></li>
         <li><a href="geschirrspühl-tagebuch.html">Geschirrspühl-Tagebuch</a></li>
         <li><a href="genshin.html">Genshin ✨</a></li>
-     <li><a href="profile.html">Profile</a></li>
+    <li><a href="profile.html">Profile</a></li>
   </ul>
 <button class="delete" onclick="window.location.href='whyDidUDelete.html'">
   <svg viewBox="0 0 448 512" class="svgIcon"><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path></svg>
@@ -106,59 +106,4 @@ width: 260px;}
 </body>
 
 <script src="script.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
- const statisticJohannaButton = document.querySelector('.statisticJohanna');
- const statisticLenaButton = document.querySelector('.statisticLena');
- const statisticJohannaChart = document.querySelector('.statisticChartJohanna');
- const statisticLenaChart = document.querySelector('.statisticChartLena'); 
-
- statisticLenaChart.style.display = 'none';
- statisticJohannaChart.style.display = 'none';
-
-    statisticJohannaButton.addEventListener('click', () => {
-    statisticLenaChart.style.display = 'none';
-    statisticJohannaChart.style.display = 'block';});
-
-    statisticLenaButton.addEventListener('click', () => {
-    statisticJohannaChart.style.display = 'none';
-    statisticLenaChart.style.display = 'block';});
-      
-
-
-
-
-        const stickerCountsKey = 'stickerCounts';
-        const displayElement = document.getElementById('mostUsedStickerDisplay');
-        
-        if (!displayElement) {
-            console.error("Platzhalter-Element 'mostUsedStickerDisplay' nicht gefunden.");
-            return;
-        }
-
-        // 1. Gespeicherte Zähler laden
-        const stickerCounts = JSON.parse(localStorage.getItem(stickerCountsKey) || "{}");
-
-        let mostSelectedMood = 'Kein Sticker ausgewählt';
-        let maxCount = 0;
-
-        // Finde den Eintrag mit der höchsten Zählung
-        for (const mood in stickerCounts) {
-            if (stickerCounts[mood] > maxCount) {
-                maxCount = stickerCounts[mood];
-                mostSelectedMood = mood;
-            }
-        }
-
-        // 3. Ergebnis im HTML anzeigen
-        if (maxCount > 0) {
-            let mostSelectedMood = mood.display;
-            maxCount();
-                ;
-        } else {
-            mostSelectedMood = "Noch keine Sticker-Daten vorhanden.";
-        }
-      });
-</script>
-
 </html>
