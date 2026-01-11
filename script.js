@@ -4,7 +4,8 @@
 {
   const fistEnterPageDiv = document.getElementById('fistEnterPageee');
   const fistEnterPageBtn = document.getElementById('fistEnterPageBtn');
-  const loginDiv = document.getElementById('login');
+  const
+   loginDiv = document.getElementById('login');
   const loginBtn = document.querySelector('.loginBtn');
   const inputName = document.getElementById('enterName');
   const inputPassword = document.getElementById('enterPassword');
